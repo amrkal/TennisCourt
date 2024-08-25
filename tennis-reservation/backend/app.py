@@ -26,8 +26,13 @@ def home():
 
 
 jwt = JWTManager(app)
-mongo_uri = os.getenv('MONGO_URI')
-client = MongoClient(mongo_uri)
+try:
+    client = MongoClient(os.getenv("MONGO_URI"))
+    db = client['tennis_court_db']
+    print("Connection successful")
+except Exception as e:
+    print(f"Error connecting to MongoDB: {e}")
+
 db = client['tennis_reservation_db']
 reservations_collection = db['reservations']
 users_collection = db['users']
