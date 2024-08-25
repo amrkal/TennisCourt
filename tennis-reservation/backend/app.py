@@ -25,8 +25,8 @@ def home():
 
 
 jwt = JWTManager(app)
-
-client = os.getenv('MONGO_URI')
+mongo_uri = os.getenv('MONGO_URI')
+client = MongoClient(mongo_uri)
 db = client['tennis_reservation_db']
 reservations_collection = db['reservations']
 users_collection = db['users']
