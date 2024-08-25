@@ -12,6 +12,7 @@ from config import Config
 app = Flask(__name__)
 app.config.from_object(Config)
 
+
 # Enable CORS for all routes and origins
 CORS(app)
 
