@@ -13,11 +13,7 @@ app = Flask(__name__)
 app.config.from_object(Config)
 
 # Enable CORS for all routes and origins
-CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
-
-
-# Enable CORS for all routes
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}}) 
 
 load_dotenv()
 
