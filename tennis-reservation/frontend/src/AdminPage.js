@@ -7,7 +7,7 @@ function AdminPage() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch('http://localhost:5000/reservations', {
+    fetch('https://tenniscourt-backend.onrender.com/reservations', {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('access_token')}`
