@@ -1,0 +1,84 @@
+/* App.css */
+.App {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  padding: 20px;
+  color: #333;
+}
+
+.App-header {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px;
+}
+
+.App-header h1 {
+  margin: 0;
+}
+
+main {
+  padding: 20px;
+}
+
+.reservation-form,
+.reservations-list {
+  margin: 20px auto;
+  max-width: 600px;
+}
+
+form input,
+form select,
+form button {
+  display: block;
+  width: 100%;
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.App-footer {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+footer p {
+  margin: 0;
+}
+
+.map-container-wrapper {
+  display: grid;
+  place-items: center; /* Center both horizontally and vertically */
+  height: 500px; /* Adjust as needed */
+}
+
+.map-container {
+  width: 50%; /* Adjust the width as needed */
+  height: 100%; /* Ensure it takes the full height of the wrapper */
+}

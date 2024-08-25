@@ -1,0 +1,18 @@
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+class Config:
+    TWILIO_ACCOUNT_SID = 'AC5d2d7fa8d1e1b7c20d571c1bee976d2c'
+    TWILIO_AUTH_TOKEN = 'c10a513eb9408e57887a3763bd620165'
+    TWILIO_VERIFY_SERVICE_SID = 'VA77f96acf38c2a83fb06ebbde87a59d32'
+    TWILIO_PHONE_NUMBER = '+972504707027'
+    MONGO_URI = 'mongodb://localhost:27017/tennis_reservations'
+
+
+    JWT_SECRET_KEY = '5d41402abc4b2a76b9719d911017c592' 
+    SECRET_KEY = '5e6e84643f0c4a5b9c62db6b9349d034'
+
+    CELERY_BROKER_URL = 'redis://localhost:6379/0'
+    CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
