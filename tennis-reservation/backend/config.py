@@ -8,7 +8,7 @@ class Config:
     TWILIO_AUTH_TOKEN = 'c10a513eb9408e57887a3763bd620165'
     TWILIO_VERIFY_SERVICE_SID = 'VA77f96acf38c2a83fb06ebbde87a59d32'
     TWILIO_PHONE_NUMBER = '+972504707027'
-    MONGO_URI = 'mongodb://localhost:27017/tennis_reservations'
+    MONGO_URI = 'mongodb+srv://TennisCourt:<124487TennisCourt>@atlascluster.5vn9k.mongodb.net/?retryWrites=true&w=majority&appName=AtlasCluster'
 
 
     JWT_SECRET_KEY = '5d41402abc4b2a76b9719d911017c592' 
