@@ -7,10 +7,10 @@ from flask_cors import CORS
 from bson.binary import Binary
 import bcrypt
 from dotenv import load_dotenv
-from config import Config
+import os
+
 
 app = Flask(__name__)
-app.config.from_object(Config)
 
 
 # Enable CORS for all routes and origins
@@ -26,22 +26,29 @@ def home():
 
 jwt = JWTManager(app)
 
-client = MongoClient('localhost', 27017)
+client = os.getenv('MONGO_URI')
 db = client['tennis_reservation_db']
 reservations_collection = db['reservations']
 users_collection = db['users']
 
-account_sid = app.config['TWILIO_ACCOUNT_SID']
-auth_token = app.config['TWILIO_AUTH_TOKEN']
-verify_service_sid = app.config['TWILIO_VERIFY_SERVICE_SID']
-twilio_client = Client(account_sid, auth_token)
-twilio_phone_number = app.config['TWILIO_PHONE_NUMBER']
+TWILIO_ACCOUNT_SID = os.getenv('TWILIO_ACCOUNT_SID')
+TWILIO_AUTH_TOKEN = os.getenv('TWILIO_AUTH_TOKEN')
+TWILIO_VERIFY_SERVICE_SID = os.getenv('TWILIO_VERIFY_SERVICE_SID')
+TWILIO_PHONE_NUMBER = os.getenv('TWILIO_PHONE_NUMBER')
+
+twilio_client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
+
+@app.route('/')
+def index():
+    client = MongoClient(os.getenv('MONGO_URI'))
+    db = client.test_database
+    return "MongoDB Connection Successful!"
 
 def make_celery(app):
     celery = Celery(
         app.import_name,
-        backend=app.config['CELERY_RESULT_BACKEND'],
-        broker=app.config['CELERY_BROKER_URL']
+        backend=os.getenv('CELERY_RESULT_BACKEND'),
+        broker=os.getenv('CELERY_BROKER_URL')
     )
     celery.conf.update(app.config)
     return celery
@@ -54,7 +61,7 @@ def send_reminder(phone, timeSlot, date):
     try:
         twilio_client.messages.create(
             body=message,
-            from_=twilio_phone_number,
+            from_=TWILIO_PHONE_NUMBER,
             to=phone
         )
     except Exception as e:
@@ -75,7 +82,7 @@ def send_verification():
     try:
         verification = twilio_client.verify \
             .v2 \
-            .services(verify_service_sid) \
+            .services(TWILIO_VERIFY_SERVICE_SID) \
             .verifications \
             .create(to=formatted_phone, channel='sms')
 
@@ -96,7 +103,7 @@ def verify_code():
         formatted_phone = format_phone_number(phone_number)
         verification_check = twilio_client.verify \
             .v2 \
-            .services(verify_service_sid) \
+            .services(TWILIO_VERIFY_SERVICE_SID) \
             .verification_checks \
             .create(to=formatted_phone, code=code)
 
