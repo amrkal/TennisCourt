@@ -68,7 +68,7 @@ function App() {
       formattedPhone = '+972' + formattedPhone.slice(1);
     }
 
-    fetch('http://localhost:5000/send_verification', {
+    fetch('https://tenniscourt-eb61.onrender.com/api/send_verification', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -96,7 +96,7 @@ function App() {
       formattedPhone = '+972' + formattedPhone.slice(1);
     }
 
-    fetch('http://localhost:5000/verify_code', {
+    fetch('https://tenniscourt-eb61.onrender.com/api/verify_code', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -126,7 +126,7 @@ function App() {
     }
     const newReservation = { firstName, lastName, phone, email, date, startTime, endTime };
 
-    fetch('http://localhost:5000/reservations', {
+    fetch('https://tenniscourt-eb61.onrender.com/api/reservations', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -160,7 +160,7 @@ function App() {
 
 
   const addDemoReservation = () => {
-    fetch('http://localhost:5000/add_demo_reservation', {
+    fetch('https://tenniscourt-eb61.onrender.com/api/add_demo_reservation', {
       method: 'POST',
     })
     .then(response => response.json())

@@ -11,10 +11,14 @@ from config import Config
 
 
 
+
 app = Flask(__name__)
 app.config.from_object(Config)
 CORS(app)
 load_dotenv()
+@app.route('/')
+def home():
+    return 'Welcome to the Tennis Court API!'
 
 jwt = JWTManager(app)
 
