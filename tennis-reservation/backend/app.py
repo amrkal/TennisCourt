@@ -24,6 +24,8 @@ def home():
     return 'Welcome to the Tennis Court API!'
 
 
+JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY')
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 jwt = JWTManager(app)
 try:
@@ -43,6 +45,7 @@ TWILIO_VERIFY_SERVICE_SID = os.getenv('TWILIO_VERIFY_SERVICE_SID')
 TWILIO_PHONE_NUMBER = os.getenv('TWILIO_PHONE_NUMBER')
 
 twilio_client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
+
 
 @app.route('/')
 def index():
