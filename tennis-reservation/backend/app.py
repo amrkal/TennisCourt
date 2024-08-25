@@ -9,13 +9,17 @@ import bcrypt
 from dotenv import load_dotenv
 from config import Config
 
-
-
-
 app = Flask(__name__)
 app.config.from_object(Config)
+
+# Enable CORS for all routes and origins
+CORS(app, resources={r"/*": {"origins": "*"}})
+
+# Enable CORS for all routes
 CORS(app)
+
 load_dotenv()
+
 @app.route('/')
 def home():
     return 'Welcome to the Tennis Court API!'
@@ -144,7 +148,6 @@ def get_reservations():
 def add_reservation():
     data = request.json
     try:
-        #id = data.get('_id')
         first_name = data.get('firstName')
         last_name = data.get('lastName')
         phone = data.get('phone')
@@ -192,9 +195,6 @@ def add_demo_reservation():
         return jsonify({"message": "Demo reservation added", "reservation_id": str(reservation_id)}), 201
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
-
-
 
 if __name__ == "__main__":
     app.run(debug=True)
