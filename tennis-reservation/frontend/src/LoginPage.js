@@ -9,7 +9,7 @@ function LoginPage() {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    axios.post('http://localhost:5000/login', { username, password })
+    axios.post('https://tenniscourt-eb61.onrender.com/api/login', { username, password })
       .then(response => {
         localStorage.setItem('access_token', response.data.access_token);
         // Redirect or handle login success
