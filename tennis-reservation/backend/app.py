@@ -7,6 +7,7 @@ from flask_cors import CORS
 from bson.binary import Binary
 import bcrypt
 from dotenv import load_dotenv
+import traceback
 import os
 
 
@@ -201,7 +202,10 @@ def add_demo_reservation():
         
         return jsonify({"message": "Demo reservation added", "reservation_id": str(reservation_id)}), 201
     except Exception as e:
+        app.logger.error(f"Error occurred: {e}\n{traceback.format_exc()}")
         return jsonify({"error": str(e)}), 500
+    
+    
 
 if __name__ == "__main__":
     app.run(debug=True)
