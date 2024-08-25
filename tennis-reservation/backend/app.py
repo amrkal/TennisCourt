@@ -10,6 +10,7 @@ from dotenv import load_dotenv
 from config import Config
 
 
+
 app = Flask(__name__)
 app.config.from_object(Config)
 CORS(app)

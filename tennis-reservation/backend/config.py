@@ -2,7 +2,7 @@ from dotenv import load_dotenv
 import os
 
 load_dotenv()
-
+    
 class Config:
     TWILIO_ACCOUNT_SID = 'AC5d2d7fa8d1e1b7c20d571c1bee976d2c'
     TWILIO_AUTH_TOKEN = 'c10a513eb9408e57887a3763bd620165'
