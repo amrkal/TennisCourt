@@ -25,12 +25,11 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 jwt = JWTManager(app)
 try:
     client = MongoClient(os.getenv("MONGO_URI"))
-    db = client['tennis_court_db']
+    db = client['tennis_reservation_db']
     print("Connection successful")
 except Exception as e:
     print(f"Error connecting to MongoDB: {e}")
 
-db = client['tennis_reservation_db']
 reservations_collection = db['reservations']
 users_collection = db['users']
 
@@ -80,6 +79,7 @@ def send_reminder(phone, timeSlot, date):
 def format_phone_number(phone_number):
     if not phone_number.startswith('+'):
         phone_number = '+972' + phone_number.lstrip('0')  # Example for Israel
+    print(format_phone_number)
     return phone_number
 
 @app.route('/send_verification', methods=['POST'])
