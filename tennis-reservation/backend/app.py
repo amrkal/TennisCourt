@@ -75,7 +75,7 @@ def send_reminder(phone, timeSlot, date):
 def format_phone_number(phone_number):
     if not phone_number.startswith('+'):
         phone_number = '+972' + phone_number.lstrip('0')  # Example for Israel
-    print(format_phone_number)
+    print(phone_number)
     return phone_number
 
 @app.route('/send_verification', methods=['POST'])
@@ -94,7 +94,9 @@ def send_verification():
 
         return jsonify({"message": "Verification code sent"}), 200
     except Exception as e:
-        print(f"Twilio verification error: {e}")
+        app.logger.error(f"Twilio verification error: {e}\n{traceback.format_exc()}")
+        if "403" in str(e):
+            return jsonify({"error": "Verification creation blocked by Twilio. Please contact support if the issue persists."}), 403
         return jsonify({"error": str(e)}), 500
 
 @app.route('/verify_code', methods=['POST'])
