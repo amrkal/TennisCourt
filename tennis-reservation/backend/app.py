@@ -19,10 +19,10 @@ app = Flask(__name__)
 CORS(app)
 
 
-#app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
-#app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
-#jwt = JWTManager(app)
+jwt = JWTManager(app)
 
 client = MongoClient(os.getenv("MONGO_URI"))
 db = client['tennis_reservation_db']
