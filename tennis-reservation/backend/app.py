@@ -137,8 +137,9 @@ def login():
             if isinstance(hashed_password, str):
                 hashed_password = hashed_password.encode('utf-8')
             if bcrypt.checkpw(password.encode('utf-8'), hashed_password):
-                # Instead of creating and returning a JWT, just return a success message
-                return jsonify({"message": "Login successful"}), 200
+                access_token = create_access_token(identity=username)
+                return jsonify(access_token=access_token), 200
+                #return jsonify({"message": "Login successful"}), 200
             else:
                 return jsonify({"error": "Invalid credentials"}), 401
         else:
