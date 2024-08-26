@@ -12,7 +12,7 @@ function AdminPage() {
     const token = localStorage.getItem('access_token');
 
     if (!token) {
-      history.push('/login');
+      navigate('/login');
       return;
     }
 
