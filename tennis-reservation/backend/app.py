@@ -213,7 +213,25 @@ def add_demo_reservation():
         app.logger.error(f"Error occurred: {e}\n{traceback.format_exc()}")
         return jsonify({"error": str(e)}), 500
     
-    
+
+# User details
+username = 'Admin'
+password = 'Admin'
+
+# Hash the password
+hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+
+# Insert user into the database
+user = {
+    'username': username,
+    'password': hashed_password.decode('utf-8')  # Store the hashed password as a string
+}
+
+# Add user to the collection
+result = users_collection.insert_one(user)
+
+print(f"User created with id: {result.inserted_id}")
+
 
 if __name__ == "__main__":
     app.run(debug=True)
