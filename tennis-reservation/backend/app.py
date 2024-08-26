@@ -19,10 +19,10 @@ app = Flask(__name__)
 CORS(app)
 
 
-app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
-app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+#app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
+#app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
-jwt = JWTManager(app)
+#jwt = JWTManager(app)
 
 client = MongoClient(os.getenv("MONGO_URI"))
 db = client['tennis_reservation_db']
@@ -35,7 +35,7 @@ TWILIO_VERIFY_SERVICE_SID = os.getenv('TWILIO_VERIFY_SERVICE_SID')
 TWILIO_PHONE_NUMBER = os.getenv('TWILIO_PHONE_NUMBER')
 twilio_client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
 
-required_env_vars = ['JWT_SECRET_KEY', 'SECRET_KEY', 'MONGO_URI', 'TWILIO_ACCOUNT_SID', 'TWILIO_AUTH_TOKEN', 'TWILIO_VERIFY_SERVICE_SID', 'TWILIO_PHONE_NUMBER']
+required_env_vars = ['MONGO_URI', 'TWILIO_ACCOUNT_SID', 'TWILIO_AUTH_TOKEN', 'TWILIO_VERIFY_SERVICE_SID', 'TWILIO_PHONE_NUMBER']
 for var in required_env_vars:
     if not os.getenv(var):
         raise EnvironmentError(f"Required environment variable '{var}' is missing")
@@ -137,8 +137,8 @@ def login():
             if isinstance(hashed_password, str):
                 hashed_password = hashed_password.encode('utf-8')
             if bcrypt.checkpw(password.encode('utf-8'), hashed_password):
-                access_token = create_access_token(identity=username)
-                return jsonify(access_token=access_token), 200
+                # Instead of creating and returning a JWT, just return a success message
+                return jsonify({"message": "Login successful"}), 200
             else:
                 return jsonify({"error": "Invalid credentials"}), 401
         else:
@@ -146,6 +146,7 @@ def login():
     except Exception as e:
         print(f"An error occurred: {e}")
         return jsonify({"error": "An internal server error occurred"}), 500
+
 
 @app.route('/reservations', methods=['GET'])
 @jwt_required()

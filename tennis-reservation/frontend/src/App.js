@@ -18,6 +18,7 @@ function App() {
   const [otp, setOtp] = useState('');
   const [isVerified, setIsVerified] = useState(false);
   const [verificationSent, setVerificationSent] = useState(false);
+  const [availableTimes, setAvailableTimes] = useState([]);
 
   const hourSlots = [
     '08:00', '09:00', '10:00', '11:00',
@@ -188,30 +189,41 @@ function App() {
 
 
   useEffect(() => {
-    fetch('https://tenniscourt-backend.onrender.com/reservations', {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+    if (date) {
+      const token = localStorage.getItem('access_token');
+      if (!token) {
+        alert('You need to log in to fetch reservations.');
+        return;
       }
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (Array.isArray(data)) {
-        setReservations(data);
-      } else {
-        console.error('Unexpected data format:', data);
-        setReservations([]); // Default to empty array
-      }
-    })
-    .catch(error => console.error('Error fetching reservations:', error));
-  }, []);
+  
+      fetch(`https://tenniscourt-backend.onrender.com/reservations?date=${date}`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+      .then(response => {
+        if (response.status === 401) {
+          throw new Error('Unauthorized');
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (Array.isArray(data)) {
+          const bookedTimes = data.map(reservation => reservation.startTime);
+          const available = hourSlots.filter(slot => !bookedTimes.includes(slot));
+          setAvailableTimes(available);
+        } else {
+          console.error('Unexpected data format:', data);
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching reservations:', error);
+        alert('Error fetching reservations. Please check your login status.');
+      });
+    }
+  }, [date]);
 
-  const isTimeSlotTaken = (selectedDate, slot) => {
-    return reservations.some(reservation => 
-      reservation.date === selectedDate && 
-      (reservation.startTime === slot || reservation.endTime === slot)
-    );
-  };
 
 
 
@@ -284,17 +296,16 @@ function App() {
               min={weekDates[0]}
               max={weekDates[6]}
             />
-            <select
+              <select
               value={startTime}
               onChange={(e) => setStartTime(e.target.value)}
               required
             >
               <option value="" disabled>Select Start Time</option>
-              {hourSlots.map(slot => (
+              {availableTimes.map(slot => (
                 <option 
                   key={slot} 
                   value={slot} 
-                  disabled={isTimeSlotTaken(date, slot)}
                 >
                   {slot}
                 </option>
@@ -310,7 +321,6 @@ function App() {
                 <option 
                   key={slot} 
                   value={slot}
-                  disabled={isTimeSlotTaken(date, slot)}
                 >
                   {slot}
                 </option>
