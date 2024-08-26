@@ -131,7 +131,6 @@ function App() {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('access_token')}`
       },
       body: JSON.stringify(newReservation)
     })
@@ -190,17 +189,8 @@ function App() {
 
   useEffect(() => {
     if (date) {
-      const token = localStorage.getItem('access_token');
-      if (!token) {
-        alert('You need to log in to fetch reservations.');
-        return;
-      }
-  
       fetch(`https://tenniscourt-backend.onrender.com/reservations?date=${date}`, {
         method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
       })
       .then(response => {
         if (response.status === 401) {

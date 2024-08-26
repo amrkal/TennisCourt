@@ -149,7 +149,7 @@ def login():
 
 
 @app.route('/reservations', methods=['GET'])
-@jwt_required()
+#@jwt_required()
 def get_reservations():
     try:
         reservations = list(reservations_collection.find())
@@ -160,7 +160,7 @@ def get_reservations():
         return jsonify({"error": str(e)}), 500
 
 @app.route('/reservations', methods=['POST'])
-@jwt_required()
+#@jwt_required()
 def add_reservation():
     data = request.json
     try:
