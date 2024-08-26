@@ -23,13 +23,9 @@ JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY')
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 jwt = JWTManager(app)
-try:
-    client = MongoClient(os.getenv("MONGO_URI"))
-    db = client['tennis_reservation_db']
-    print("Connection successful")
-except Exception as e:
-    print(f"Error connecting to MongoDB: {e}")
 
+client = MongoClient(os.getenv("MONGO_URI"))
+db = client['tennis_reservation_db']
 reservations_collection = db['reservations']
 users_collection = db['users']
 

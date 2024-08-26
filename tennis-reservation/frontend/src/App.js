@@ -42,26 +42,6 @@ function App() {
   
   const weekDates = generateWeekDates();
 
-/*useEffect(() => {
-  fetch('http://localhost:5000/reservations', {
-    method: 'GET',
-    headers: {
-      'Authorization': `Bearer ${localStorage.getItem('access_token')}`
-    }
-  })
-    .then(response => response.json())
-    .then(data => {
-      if (Array.isArray(data)) {
-        setReservations(data);
-      } else {
-        console.error('Unexpected data format:', data);
-        setReservations([]); // Default to empty array
-      }
-    })
-    .catch(error => console.error('Error fetching reservations:', error));
-}, []);*/
-  
-
   const sendVerification = () => {
     let formattedPhone = phone;
     if (!formattedPhone.startsWith('+')) {
