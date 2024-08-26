@@ -63,6 +63,7 @@ function App() {
 }, []);*/
   
 
+
   const sendVerification = () => {
     let formattedPhone = phone;
     if (!formattedPhone.startsWith('+')) {

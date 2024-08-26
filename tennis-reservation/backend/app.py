@@ -130,6 +130,7 @@ def login():
 
         if not username or not password:
             return jsonify({"error": "Username and password are required"}), 400
+        
 
         user = users_collection.find_one({"username": username})
         if user and 'password' in user:
@@ -201,7 +202,7 @@ def add_demo_reservation():
             "lastName": "Doe",
             "phone": "+972500000000",
             "email": "john.doe@example.com",
-            "date": "2024-09-01",  # Change to the date you want
+            "date": "2024-08-29",  # Change to the date you want
             "startTime": "10:00",
             "endTime": "11:00"
         }
