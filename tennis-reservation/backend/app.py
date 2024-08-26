@@ -19,8 +19,8 @@ app = Flask(__name__)
 CORS(app)
 
 
-JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY')
-SECRET_KEY = os.getenv('SECRET_KEY')
+app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
 jwt = JWTManager(app)
 
@@ -33,21 +33,21 @@ TWILIO_ACCOUNT_SID = os.getenv('TWILIO_ACCOUNT_SID')
 TWILIO_AUTH_TOKEN = os.getenv('TWILIO_AUTH_TOKEN')
 TWILIO_VERIFY_SERVICE_SID = os.getenv('TWILIO_VERIFY_SERVICE_SID')
 TWILIO_PHONE_NUMBER = os.getenv('TWILIO_PHONE_NUMBER')
-
 twilio_client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
 
 required_env_vars = ['JWT_SECRET_KEY', 'SECRET_KEY', 'MONGO_URI', 'TWILIO_ACCOUNT_SID', 'TWILIO_AUTH_TOKEN', 'TWILIO_VERIFY_SERVICE_SID', 'TWILIO_PHONE_NUMBER']
 for var in required_env_vars:
     if not os.getenv(var):
         raise EnvironmentError(f"Required environment variable '{var}' is missing")
-
-
+    print(var)
 
 @app.route('/')
 def index():
     client = MongoClient(os.getenv('MONGO_URI'))
     db = client.test_database
     return "MongoDB Connection Successful!"
+
+
 
 def make_celery(app):
     celery = Celery(
