@@ -2,11 +2,9 @@ import React, { useState, useEffect, useMemo } from 'react';
 import './App.css';
 import 'leaflet/dist/leaflet.css';
 import MapComponent from './MapComponent';
-
-
+import DatePicker from './DatePicker'; // Import the custom DatePicker component
 
 function App() {
-  
   const [reservations, setReservations] = useState([]);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -20,12 +18,6 @@ function App() {
   const [verificationSent, setVerificationSent] = useState(false);
   const [availableTimes, setAvailableTimes] = useState([]);
 
-  /*const hourSlots = [
-    '08:00', '09:00', '10:00', '11:00',
-    '12:00','13:00','14:00','15:00',
-    '16:00','17:00','18:00','19:00',
-    '20:00','21:00','22:00'
-  ];*/
   const hourSlots = useMemo(() => [
     '08:00', '09:00', '10:00', '11:00',
     '12:00', '13:00', '14:00', '15:00',
@@ -33,52 +25,16 @@ function App() {
     '20:00', '21:00', '22:00'
   ], []);
 
- // const position = [33.260420, 35.770795];
-
-  const generateWeekDates = () => {
-    const dates = [];
-    const today = new Date();
-    for (let i = 0; i < 7; i++) {
-      const nextDate = new Date(today);
-      nextDate.setDate(today.getDate() + i);
-      dates.push(nextDate.toISOString().split('T')[0]);
-    }
-    return dates;
-  };
-
-  
-  const weekDates = generateWeekDates();
-
-/*useEffect(() => {
-  fetch('http://localhost:5000/reservations', {
-    method: 'GET',
-    headers: {
-      'Authorization': `Bearer ${localStorage.getItem('access_token')}`
-    }
-  })
-    .then(response => response.json())
-    .then(data => {
-      if (Array.isArray(data)) {
-        setReservations(data);
-      } else {
-        console.error('Unexpected data format:', data);
-        setReservations([]); // Default to empty array
-      }
-    })
-    .catch(error => console.error('Error fetching reservations:', error));
-}, []);*/
-  // Your useEffect will now correctly recognize `hourSlots` as a stable dependency
   useEffect(() => {
     if (date) {
       fetch(`https://tenniscourt-backend.onrender.com/reservations?date=${date}`, {
         method: 'GET',
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+          'Content-Type': 'application/json',
         }
       })
         .then(response => response.json())
         .then(data => {
-          // Ensure the fetched data is an array
           if (!Array.isArray(data)) {
             throw new Error('Unexpected data format');
           }
@@ -88,7 +44,6 @@ function App() {
             endTime: reservation.endTime,
           }));
           
-          // Filter available start times
           const availableStartTimes = hourSlots.filter(slot => 
             !bookedTimes.some(reservation => 
               (slot >= reservation.startTime && slot < reservation.endTime)
@@ -99,17 +54,16 @@ function App() {
         })
         .catch(error => console.error('Error fetching reservations:', error));
     }
-  }, [date, hourSlots]); // include hourSlots safely here
+  }, [date, hourSlots]);
 
-const filterEndTimes = (start) => {
-  return hourSlots.filter(slot =>
-    slot > start &&
-    !reservations.some(reservation => 
-      (slot > reservation.startTime && start < reservation.endTime)
-    )
-  );
-};
-
+  const filterEndTimes = (start) => {
+    return hourSlots.filter(slot =>
+      slot > start &&
+      !reservations.some(reservation => 
+        (slot > reservation.startTime && start < reservation.endTime)
+      )
+    );
+  };
 
   const sendVerification = () => {
     let formattedPhone = phone;
@@ -206,65 +160,6 @@ const filterEndTimes = (start) => {
     });
   };
 
-
-  // const addDemoReservation = () => {
-  //   fetch('https://tenniscourt-backend.onrender.com/add_demo_reservation', {
-  //     method: 'POST',
-  //   })
-  //   .then(response => response.json())
-  //   .then(data => {
-  //     if (data.message) {
-  //       alert('Demo reservation added!');
-  //       setReservations([...reservations, {
-  //         firstName: "John",
-  //         lastName: "Doe",
-  //         phone: "+972500000000",
-  //         email: "john.doe@example.com",
-  //         date: "2024-09-01",  // Same date as used in the backend
-  //         startTime: "10:00",
-  //         endTime: "11:00"
-  //       }]);
-  //     } else {
-  //       alert('Failed to add demo reservation. Please try again.');
-  //     }
-  //   })
-  //   .catch(error => {
-  //     console.error('Error adding demo reservation:', error);
-  //     alert('Error occurred. Please check the console for more details.');
-  //   });
-  // };
-
-
-/*  useEffect(() => {
-    if (date) {
-      fetch(`https://tenniscourt-backend.onrender.com/reservations?date=${date}`, {
-        method: 'GET',
-      })
-      .then(response => {
-        if (response.status === 401) {
-          throw new Error('Unauthorized');
-        }
-        return response.json();
-      })
-      .then(data => {
-        if (Array.isArray(data)) {
-          const bookedTimes = data.map(reservation => reservation.startTime);
-          const available = hourSlots.filter(slot => !bookedTimes.includes(slot));
-          setAvailableTimes(available);
-        } else {
-          console.error('Unexpected data format:', data);
-        }
-      })
-      .catch(error => {
-        console.error('Error fetching reservations:', error);
-        alert('Error fetching reservations. Please check your login status.');
-      });
-    }
-  }, [date]);*/
-
-
-
-
   return (
     <div className="App">
       <header className="App-header">
@@ -323,15 +218,14 @@ const filterEndTimes = (start) => {
               onChange={(e) => setEmail(e.target.value)}
               required
             />
-            <input
-              type="date"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-              required
-              min={weekDates[0]}
-              max={weekDates[6]}
+            <label htmlFor="date">Reservation Date</label>
+            <DatePicker
+              selectedDate={date}
+              onDateChange={(newDate) => setDate(newDate)}
             />
+            <label htmlFor="startTime">Start Time</label>
             <select
+              id="startTime"
               value={startTime}
               onChange={(e) => {
                 setStartTime(e.target.value);
@@ -346,42 +240,30 @@ const filterEndTimes = (start) => {
                 </option>
               ))}
             </select>
+            <label htmlFor="endTime">End Time</label>
             <select
+              id="endTime"
               value={endTime}
               onChange={(e) => setEndTime(e.target.value)}
               required
               disabled={!startTime} // Disable end time selection until start time is chosen
             >
               <option value="" disabled>Select End Time</option>
-              {startTime && filterEndTimes(startTime).map(slot => (
+              {filterEndTimes(startTime).map(slot => (
                 <option key={slot} value={slot}>
                   {slot}
                 </option>
               ))}
             </select>
-            <button type="submit">Make a Reservation</button>
+            <button type="submit">Submit Reservation</button>
           </form>
-
-          <div className="contact-info">
-            <p>For payments and support, call: <strong>058-560-5002</strong></p>
-          </div>
         </section>
-        
-        <section className="map-container-wrapper">
+        <section className="map">
           <MapComponent />
         </section>
       </main>
-      <footer className="App-footer">
-        <p>&copy; 2024 Tennis Playground. All rights reserved.</p>
-      </footer>
     </div>
   );
 }
-
-/*        <section className="reservations-list">
-          <h2>Upcoming Reservations</h2>
-          <ul>
-          </ul>
-        </section>*/
 
 export default App;

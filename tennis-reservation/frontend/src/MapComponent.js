@@ -7,8 +7,17 @@ const containerStyle = {
 };
 
 const center = {
-  lat: 33.260420,  // Replace with your location's latitude
-  lng: 35.770795   // Replace with your location's longitude
+  lat: 33.259654,  // Replace with your location's latitude
+  lng: 35.769403   // Replace with your location's longitude
+};
+
+const options = {
+  disableDefaultUI: true, // Disables all default UI controls
+  zoomControl: true, // Optionally enable zoom control
+  streetViewControl: false, // Disable street view control
+  mapTypeControl: false, // Disable map type control (e.g., satellite)
+  fullscreenControl: false, // Disable fullscreen control
+  gestureHandling: 'greedy' // Prevent map from scrolling or zooming by accident
 };
 
 const MapComponent = () => {
@@ -31,6 +40,7 @@ const MapComponent = () => {
         mapContainerStyle={containerStyle}
         center={center}
         zoom={15}
+        options={options} // Apply the options here
       >
         <Marker
           position={center}
