@@ -1,0 +1,33 @@
+/* LoginPage.css */
+.LoginPage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+  
+  .LoginPage form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .LoginPage input {
+    margin: 5px;
+    padding: 10px;
+    width: 200px;
+  }
+  
+  .LoginPage button {
+    padding: 10px;
+    width: 200px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .LoginPage p {
+    color: red;
+  }
+  

@@ -99,6 +99,8 @@ function App() {
       formattedPhone = '+972' + formattedPhone.slice(1);
     }
 
+    
+
     fetch('https://tenniscourt-backend.onrender.com/verify_code', {
       method: 'POST',
       headers: {
