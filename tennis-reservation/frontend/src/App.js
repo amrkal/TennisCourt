@@ -61,7 +61,47 @@ function App() {
     })
     .catch(error => console.error('Error fetching reservations:', error));
 }, []);*/
-  
+useEffect(() => {
+  if (date) {
+    fetch(`https://tenniscourt-backend.onrender.com/reservations?date=${date}`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+      }
+    })
+      .then(response => response.json())
+      .then(data => {
+        // Ensure the fetched data is an array
+        if (!Array.isArray(data)) {
+          throw new Error('Unexpected data format');
+        }
+        
+        const bookedTimes = data.map(reservation => ({
+          startTime: reservation.startTime,
+          endTime: reservation.endTime,
+        }));
+        
+        // Filter available start times
+        const availableStartTimes = hourSlots.filter(slot => 
+          !bookedTimes.some(reservation => 
+            (slot >= reservation.startTime && slot < reservation.endTime)
+          )
+        );
+
+        setAvailableTimes(availableStartTimes);
+      })
+      .catch(error => console.error('Error fetching reservations:', error));
+  }
+}, [date]);
+
+const filterEndTimes = (start) => {
+  return hourSlots.filter(slot =>
+    slot > start &&
+    !reservations.some(reservation => 
+      (slot > reservation.startTime && start < reservation.endTime)
+    )
+  );
+};
 
 
   const sendVerification = () => {
@@ -188,7 +228,7 @@ function App() {
   };
 
 
-  useEffect(() => {
+/*  useEffect(() => {
     if (date) {
       fetch(`https://tenniscourt-backend.onrender.com/reservations?date=${date}`, {
         method: 'GET',
@@ -213,7 +253,7 @@ function App() {
         alert('Error fetching reservations. Please check your login status.');
       });
     }
-  }, [date]);
+  }, [date]);*/
 
 
 
@@ -287,17 +327,17 @@ function App() {
               min={weekDates[0]}
               max={weekDates[6]}
             />
-              <select
+            <select
               value={startTime}
-              onChange={(e) => setStartTime(e.target.value)}
+              onChange={(e) => {
+                setStartTime(e.target.value);
+                setEndTime(''); // Reset end time when start time changes
+              }}
               required
             >
               <option value="" disabled>Select Start Time</option>
               {availableTimes.map(slot => (
-                <option 
-                  key={slot} 
-                  value={slot} 
-                >
+                <option key={slot} value={slot}>
                   {slot}
                 </option>
               ))}
@@ -306,23 +346,23 @@ function App() {
               value={endTime}
               onChange={(e) => setEndTime(e.target.value)}
               required
+              disabled={!startTime} // Disable end time selection until start time is chosen
             >
               <option value="" disabled>Select End Time</option>
-              {hourSlots.filter(slot => slot > startTime).map(slot => (
-                <option 
-                  key={slot} 
-                  value={slot}
-                >
+              {startTime && filterEndTimes(startTime).map(slot => (
+                <option key={slot} value={slot}>
                   {slot}
                 </option>
               ))}
             </select>
             <button type="submit">Make a Reservation</button>
           </form>
-          <button onClick={addDemoReservation}>
-            Add Demo Reservation
-          </button>
+
+          <div className="contact-info">
+            <p>For payments and support, call: <strong>058-560-5002</strong></p>
+          </div>
         </section>
+        
         <section className="map-container-wrapper">
           <MapContainer center={position} zoom={13} className="map-container">
             <TileLayer
@@ -343,6 +383,7 @@ function App() {
     </div>
   );
 }
+
 /*        <section className="reservations-list">
           <h2>Upcoming Reservations</h2>
           <ul>

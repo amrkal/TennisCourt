@@ -1,21 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import './AdminPage.css';
 
 function AdminPage() {
   const [reservations, setReservations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem('access_token');
-
-    if (!token) {
-      navigate('/login');
-      return;
-    }
-
     fetch('https://tenniscourt-backend.onrender.com/reservations', {
       method: 'GET',
       headers: {

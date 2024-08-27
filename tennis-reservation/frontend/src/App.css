@@ -1,47 +1,76 @@
-/* App.css */
+/* General Styles */
 .App {
-  font-family: Arial, sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   text-align: center;
   padding: 20px;
   color: #333;
 }
 
+/* Header Styles */
 .App-header {
-  background-color: #4CAF50;
+  background: linear-gradient(90deg, #4CAF50, #66BB6A);
   color: white;
-  padding: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .App-header h1 {
   margin: 0;
+  font-size: 2.5em;
+  letter-spacing: 1px;
 }
 
+/* Main Content Styles */
 main {
-  padding: 20px;
+  padding: 40px 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .reservation-form,
 .reservations-list {
-  margin: 20px auto;
+  margin: 30px auto;
   max-width: 600px;
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
+/* Form Elements Styles */
 form input,
 form select,
 form button {
   display: block;
   width: 100%;
-  margin: 10px 0;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  margin: 15px 0;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+form input:focus,
+form select:focus {
+  border-color: #4CAF50;
+  box-shadow: 0 0 10px rgba(76, 175, 80, 0.4);
+  outline: none;
+}
+
+/* Button Styles */
 button {
   background-color: #4CAF50;
   color: white;
   border: none;
   cursor: pointer;
+  padding: 12px 15px;
+  font-size: 16px;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 button:disabled {
@@ -49,36 +78,88 @@ button:disabled {
   cursor: not-allowed;
 }
 
+button:hover:not(:disabled) {
+  background-color: #45a049; /* Slightly darker green */
+  transform: translateY(-2px);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+/* List Styles */
 ul {
   list-style-type: none;
   padding: 0;
 }
 
 li {
-  padding: 10px;
+  padding: 15px;
   border-bottom: 1px solid #ddd;
 }
 
+/* Footer Styles */
 .App-footer {
-  background-color: #4CAF50;
+  background: linear-gradient(90deg, #4CAF50, #66BB6A);
   color: white;
-  padding: 10px;
+  padding: 15px;
   position: fixed;
   bottom: 0;
   width: 100%;
+  box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
 }
 
 footer p {
   margin: 0;
+  font-size: 1.1em;
 }
 
+/* Map Container Styles */
 .map-container-wrapper {
-  display: grid;
-  place-items: center; /* Center both horizontally and vertically */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 40px 0;
   height: 500px; /* Adjust as needed */
 }
 
 .map-container {
-  width: 50%; /* Adjust the width as needed */
-  height: 100%; /* Ensure it takes the full height of the wrapper */
+  width: 100%;
+  max-width: 600px; /* Ensure it doesn’t get too wide on large screens */
+  height: 40vh; /* Adjust the height relative to the viewport */
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Contact Info Styles */
+.contact-info {
+  background-color: #f1f1f1;
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 30px;
+  font-size: 1.3em;
+  font-weight: bold;
+  color: #4CAF50;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .map-container {
+    width: 100%;
+    height: 300px; /* Adjusted for smaller screens */
+  }
+  
+  .reservation-form {
+    max-width: 90%;
+    padding: 20px;
+  }
+
+  .App-header h1 {
+    font-size: 2em;
+  }
+
+  .contact-info {
+    font-size: 1.1em;
+  }
 }
