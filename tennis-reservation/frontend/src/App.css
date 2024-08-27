@@ -1,14 +1,18 @@
 /* General Styles */
 .App {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: Arial, sans-serif;
   text-align: center;
-  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
   color: #333;
 }
 
 /* Header Styles */
 .App-header {
-  background: linear-gradient(90deg, #4CAF50, #66BB6A);
+  background-color: #4CAF50;
   color: white;
   padding: 20px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -22,7 +26,8 @@
 
 /* Main Content Styles */
 main {
-  padding: 40px 20px;
+  flex: 1;
+  padding: 20px;
   background-color: #f9f9f9;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -100,33 +105,29 @@ li {
 
 /* Footer Styles */
 .App-footer {
-  background: linear-gradient(90deg, #4CAF50, #66BB6A);
+  background-color: #4CAF50;
   color: white;
   padding: 15px;
   position: fixed;
   bottom: 0;
   width: 100%;
+  z-index: 10;
   box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
-}
-
-footer p {
-  margin: 0;
-  font-size: 1.1em;
 }
 
 /* Map Container Styles */
 .map-container-wrapper {
+  flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 40px 0;
-  height: 500px; /* Adjust as needed */
+  margin-bottom: 60px; /* Ensure space between map and footer */
 }
 
 .map-container {
   width: 100%;
-  max-width: 600px; /* Ensure it doesn’t get too wide on large screens */
-  height: 40vh; /* Adjust the height relative to the viewport */
+  max-width: 600px;
+  height: 60vh;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }

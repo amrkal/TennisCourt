@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import './App.css';
 import 'leaflet/dist/leaflet.css';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
@@ -20,12 +20,18 @@ function App() {
   const [verificationSent, setVerificationSent] = useState(false);
   const [availableTimes, setAvailableTimes] = useState([]);
 
-  const hourSlots = [
+  /*const hourSlots = [
     '08:00', '09:00', '10:00', '11:00',
     '12:00','13:00','14:00','15:00',
     '16:00','17:00','18:00','19:00',
     '20:00','21:00','22:00'
-  ];
+  ];*/
+  const hourSlots = useMemo(() => [
+    '08:00', '09:00', '10:00', '11:00',
+    '12:00', '13:00', '14:00', '15:00',
+    '16:00', '17:00', '18:00', '19:00',
+    '20:00', '21:00', '22:00'
+  ], []);
 
   const position = [33.260420, 35.770795];
 
@@ -61,38 +67,39 @@ function App() {
     })
     .catch(error => console.error('Error fetching reservations:', error));
 }, []);*/
-useEffect(() => {
-  if (date) {
-    fetch(`https://tenniscourt-backend.onrender.com/reservations?date=${date}`, {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('access_token')}`
-      }
-    })
-      .then(response => response.json())
-      .then(data => {
-        // Ensure the fetched data is an array
-        if (!Array.isArray(data)) {
-          throw new Error('Unexpected data format');
+  // Your useEffect will now correctly recognize `hourSlots` as a stable dependency
+  useEffect(() => {
+    if (date) {
+      fetch(`https://tenniscourt-backend.onrender.com/reservations?date=${date}`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('access_token')}`
         }
-        
-        const bookedTimes = data.map(reservation => ({
-          startTime: reservation.startTime,
-          endTime: reservation.endTime,
-        }));
-        
-        // Filter available start times
-        const availableStartTimes = hourSlots.filter(slot => 
-          !bookedTimes.some(reservation => 
-            (slot >= reservation.startTime && slot < reservation.endTime)
-          )
-        );
-
-        setAvailableTimes(availableStartTimes);
       })
-      .catch(error => console.error('Error fetching reservations:', error));
-  }
-}, [date]);
+        .then(response => response.json())
+        .then(data => {
+          // Ensure the fetched data is an array
+          if (!Array.isArray(data)) {
+            throw new Error('Unexpected data format');
+          }
+          
+          const bookedTimes = data.map(reservation => ({
+            startTime: reservation.startTime,
+            endTime: reservation.endTime,
+          }));
+          
+          // Filter available start times
+          const availableStartTimes = hourSlots.filter(slot => 
+            !bookedTimes.some(reservation => 
+              (slot >= reservation.startTime && slot < reservation.endTime)
+            )
+          );
+
+          setAvailableTimes(availableStartTimes);
+        })
+        .catch(error => console.error('Error fetching reservations:', error));
+    }
+  }, [date, hourSlots]); // include hourSlots safely here
 
 const filterEndTimes = (start) => {
   return hourSlots.filter(slot =>
@@ -200,32 +207,32 @@ const filterEndTimes = (start) => {
   };
 
 
-  const addDemoReservation = () => {
-    fetch('https://tenniscourt-backend.onrender.com/add_demo_reservation', {
-      method: 'POST',
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.message) {
-        alert('Demo reservation added!');
-        setReservations([...reservations, {
-          firstName: "John",
-          lastName: "Doe",
-          phone: "+972500000000",
-          email: "john.doe@example.com",
-          date: "2024-09-01",  // Same date as used in the backend
-          startTime: "10:00",
-          endTime: "11:00"
-        }]);
-      } else {
-        alert('Failed to add demo reservation. Please try again.');
-      }
-    })
-    .catch(error => {
-      console.error('Error adding demo reservation:', error);
-      alert('Error occurred. Please check the console for more details.');
-    });
-  };
+  // const addDemoReservation = () => {
+  //   fetch('https://tenniscourt-backend.onrender.com/add_demo_reservation', {
+  //     method: 'POST',
+  //   })
+  //   .then(response => response.json())
+  //   .then(data => {
+  //     if (data.message) {
+  //       alert('Demo reservation added!');
+  //       setReservations([...reservations, {
+  //         firstName: "John",
+  //         lastName: "Doe",
+  //         phone: "+972500000000",
+  //         email: "john.doe@example.com",
+  //         date: "2024-09-01",  // Same date as used in the backend
+  //         startTime: "10:00",
+  //         endTime: "11:00"
+  //       }]);
+  //     } else {
+  //       alert('Failed to add demo reservation. Please try again.');
+  //     }
+  //   })
+  //   .catch(error => {
+  //     console.error('Error adding demo reservation:', error);
+  //     alert('Error occurred. Please check the console for more details.');
+  //   });
+  // };
 
 
 /*  useEffect(() => {
