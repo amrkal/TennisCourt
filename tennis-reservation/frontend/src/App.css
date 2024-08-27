@@ -1,4 +1,4 @@
-/* General Styles */
+General Styles
 .App {
   font-family: Arial, sans-serif;
   text-align: center;
@@ -103,16 +103,14 @@ li {
   border-bottom: 1px solid #ddd;
 }
 
-/* Footer Styles */
 .App-footer {
   background-color: #4CAF50;
   color: white;
   padding: 15px;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  z-index: 10;
   box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: auto; /* Pushes the footer to the bottom if content is short */
+  text-align: center;
+  width: 100%;
 }
 
 /* Map Container Styles */

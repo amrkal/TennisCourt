@@ -9,6 +9,7 @@ import bcrypt
 from dotenv import load_dotenv
 import traceback
 import os
+from datetime import timedelta
 
 load_dotenv()
 
@@ -137,7 +138,7 @@ def login():
             if isinstance(hashed_password, str):
                 hashed_password = hashed_password.encode('utf-8')
             if bcrypt.checkpw(password.encode('utf-8'), hashed_password):
-                access_token = create_access_token(identity=username)
+                access_token = create_access_token(identity=username,expires_delta=timedelta(seconds=10))
                 return jsonify(access_token=access_token), 200
             else:
                 return jsonify({"error": "Invalid credentials"}), 401

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import './App.css';
 import 'leaflet/dist/leaflet.css';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import MapComponent from './MapComponent';
 
 
 
@@ -33,7 +33,7 @@ function App() {
     '20:00', '21:00', '22:00'
   ], []);
 
-  const position = [33.260420, 35.770795];
+ // const position = [33.260420, 35.770795];
 
   const generateWeekDates = () => {
     const dates = [];
@@ -265,9 +265,6 @@ const filterEndTimes = (start) => {
 
 
 
-
-
-
   return (
     <div className="App">
       <header className="App-header">
@@ -371,17 +368,7 @@ const filterEndTimes = (start) => {
         </section>
         
         <section className="map-container-wrapper">
-          <MapContainer center={position} zoom={13} className="map-container">
-            <TileLayer
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            />
-            <Marker position={position}>
-              <Popup>
-                Tennis Court Location
-              </Popup>
-            </Marker>
-          </MapContainer>
+          <MapComponent />
         </section>
       </main>
       <footer className="App-footer">

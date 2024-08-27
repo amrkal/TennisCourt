@@ -1,19 +1,31 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './AdminPage.css';
 
 function AdminPage() {
   const [reservations, setReservations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
+    const token = localStorage.getItem('access_token');
+    if (!token) {
+      navigate('/login');  // Redirect to login if not logged in
+      return;
+    }
+  
     fetch('https://tenniscourt-backend.onrender.com/reservations', {
       method: 'GET',
       headers: {
-        'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+        'Authorization': `Bearer ${token}`
       }
     })
       .then(response => {
+        if (response.status === 401) {  // Check if unauthorized
+          navigate('/login');
+          return;
+        }
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
@@ -27,7 +39,8 @@ function AdminPage() {
         setError(error);
         setLoading(false);
       });
-  }, []);
+  }, [navigate]);
+  
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
