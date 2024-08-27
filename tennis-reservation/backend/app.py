@@ -128,10 +128,8 @@ def login():
         username = request.json.get('username')
         password = request.json.get('password')
 
-
         if not username or not password:
             return jsonify({"error": "Username and password are required"}), 400
-        
 
         user = users_collection.find_one({"username": username})
         if user and 'password' in user:
@@ -141,7 +139,6 @@ def login():
             if bcrypt.checkpw(password.encode('utf-8'), hashed_password):
                 access_token = create_access_token(identity=username)
                 return jsonify(access_token=access_token), 200
-                #return jsonify({"message": "Login successful"}), 200
             else:
                 return jsonify({"error": "Invalid credentials"}), 401
         else:
@@ -149,7 +146,6 @@ def login():
     except Exception as e:
         print(f"An error occurred: {e}")
         return jsonify({"error": "An internal server error occurred"}), 500
-
 
 @app.route('/reservations', methods=['GET'])
 #@jwt_required()
