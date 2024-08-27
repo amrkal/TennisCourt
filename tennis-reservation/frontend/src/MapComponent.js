@@ -39,7 +39,7 @@ const MapComponent = () => {
       <GoogleMap
         mapContainerStyle={containerStyle}
         center={center}
-        zoom={15}
+        zoom={18}
         options={options} // Apply the options here
         onClick={handleMarkerClick} // Handle clicks on the map
         
