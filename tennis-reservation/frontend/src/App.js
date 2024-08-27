@@ -258,6 +258,11 @@ function App() {
             <button type="submit">Submit Reservation</button>
           </form>
         </section>
+        <section className="contact-info">
+          <h2>Contact Us</h2>
+          <p>If you have any questions or need assistance, please call us at:</p>
+          <p><strong>058-560-5002</strong></p>
+        </section>
         <section className="map">
           <MapComponent />
         </section>

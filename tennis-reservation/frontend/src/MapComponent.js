@@ -41,6 +41,8 @@ const MapComponent = () => {
         center={center}
         zoom={15}
         options={options} // Apply the options here
+        onClick={handleMarkerClick} // Handle clicks on the map
+        
       >
         <Marker
           position={center}
